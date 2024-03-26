@@ -1,0 +1,14 @@
+[workspace]
+[package]
+version = "0.1.0"
+name = "program"
+edition = "2021"
+
+[dependencies]
+base64 = "0.22.0"
+chrono = "0.4.35"
+hex = "0.4.3"
+hmac = "0.12.1"
+serde_json = "1.0.114"
+sha2 = "0.10.8"
+sp1-zkvm = { git = "https://github.com/succinctlabs/sp1.git" }
