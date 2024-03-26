@@ -50,11 +50,11 @@ func genleafLayer(ns NameSpaces) (Layer, map[string]leafRange) {
 		leafLayer       = make(Layer, ns.Size())
 		namespaceRanges = make(map[string]leafRange)
 	)
+	i := 0
 	for _, namespace := range ns.ValidateAndSort() {
 		for _, rec := range ns.GetRecords(namespace) {
-			node := DataToNode(32, rec)
-			leafLayer = append(leafLayer, make(Node, len(node)))
-			copy(leafLayer[len(leafLayer)-1], node)
+			leafLayer[i] = DataToNode(ns.NamespaceSize(), rec)
+			i++
 		}
 	}
 	return leafLayer, namespaceRanges
@@ -77,6 +77,7 @@ func calculateAbsenceIndex(namespaceLen IDSize, nID ID, leafLayer Layer) int {
 		// prevNs <= currentNs is always true. Also we only check for strictly
 		// smaller: prev < nid < current because if we either side was equal, we
 		// would have found the namespace before.
+		// For leaf nodes MinNS or MaxNS is just it's NS.
 		if prevLeaf.MinNs(namespaceLen).Less(nID) && nID.Less(curLeaf.MinNs(namespaceLen)) {
 			return index
 		}

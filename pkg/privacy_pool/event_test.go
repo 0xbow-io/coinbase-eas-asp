@@ -1,4 +1,4 @@
-package statedb
+package privacypool
 
 import (
 	"encoding/hex"
@@ -22,7 +22,7 @@ func Test_Event_Record_Element(t *testing.T) {
 	require.NoError(t, err)
 
 	// test event to record
-	rec, err := e.AsRecord()
+	rec, err := e.Serialize()
 	require.NoError(t, err)
 	require.Equal(t, e.TxHash, rec.TxHash())
 	require.Equal(t, e.LogIndex, rec.LogIndex())

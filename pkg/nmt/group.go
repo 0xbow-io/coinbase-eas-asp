@@ -11,9 +11,9 @@ import (
 // Each namespace-prefixed data item is represented as a byte slice.
 // namespaceLen is the length of the namespace prefix.
 // data hash is of ElementSize bytes (32 bytes)
-type NameSpaceGroup []data
+type NameSpaceGroup []Record
 
-func (nsg NameSpaceGroup) Contains(d data) (index int, found bool) {
+func (nsg NameSpaceGroup) Contains(d Record) (index int, found bool) {
 	for i, v := range nsg {
 		if bytes.Equal(v, d) {
 			return i, true
@@ -68,7 +68,7 @@ func (ng *NsGroups) NamespaceSize() IDSize {
 }
 
 func (ng *NsGroups) Size() int {
-	return len(ng.namespaces)
+	return ng.TotalNumOfRecords
 }
 
 // Sort interface implementation
@@ -129,7 +129,7 @@ func (ng *NsGroups) ValidateOrder() error {
 	return nil
 }
 
-func (ng *NsGroups) Add(d data) (string, ID, error) {
+func (ng *NsGroups) Add(d Record) (string, ID, error) {
 	var (
 		nID    ID
 		nIDStr string
@@ -148,7 +148,7 @@ func (ng *NsGroups) Add(d data) (string, ID, error) {
 		idx = ng.Len()
 		// doesn't exist add new entry
 		ng.nsIdxs[nIDStr] = idx
-		ng.ngs = append(ng.ngs, NameSpaceGroup{make(data, len(d))})
+		ng.ngs = append(ng.ngs, NameSpaceGroup{make(Record, len(d))})
 		ng.namespaces = append(ng.namespaces, nID)
 
 		// copy over data content
@@ -158,7 +158,7 @@ func (ng *NsGroups) Add(d data) (string, ID, error) {
 		ng.Sort()
 
 	} else {
-		ng.ngs[idx] = append(ng.ngs[idx], make(data, len(d)))
+		ng.ngs[idx] = append(ng.ngs[idx], make(Record, len(d)))
 		copy(ng.ngs[idx][ng.ngs[idx].Len()-1], d)
 	}
 

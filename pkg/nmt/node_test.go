@@ -22,7 +22,7 @@ func Test_DataToNode_Zero(t *testing.T) {
 func Test_DataToNode(t *testing.T) {
 	testGroupSize := 10
 	testRecordSize := 10
-	nsgroups, _ := gen_ngs(t, testGroupSize, testRecordSize, true)
+	nsgroups := gen_ngs(t, testGroupSize, testRecordSize, true)
 
 	for _, nsgroup := range nsgroups.ngs {
 		for _, rec := range nsgroup {
@@ -37,7 +37,7 @@ func Test_DataToNode(t *testing.T) {
 func Test_BuildNode_NonZero_NonZero(t *testing.T) {
 	testGroupSize := 2
 	testRecordSize := 1
-	nsgroups, _ := gen_ngs(t, testGroupSize, testRecordSize, true)
+	nsgroups := gen_ngs(t, testGroupSize, testRecordSize, true)
 
 	allNodes, _ := genleafLayer(nsgroups)
 
@@ -62,7 +62,7 @@ func Test_BuildNode_Zero_NonZero(t *testing.T) {
 	zeroNode := NodeValueFromZero(32, Element(zero))
 	require.Equal(t, zeroNode.Hash(32).Hex(), hex.EncodeToString(zero))
 
-	nsgroups, _ := gen_ngs(t, 1, 1, true)
+	nsgroups := gen_ngs(t, 1, 1, true)
 
 	allNodes, _ := genleafLayer(nsgroups)
 
@@ -87,7 +87,7 @@ func Test_BuildNode_NonZero_Zero(t *testing.T) {
 	zeroNode := NodeValueFromZero(32, Element(zero))
 	require.Equal(t, zeroNode.Hash(32).Hex(), hex.EncodeToString(zero))
 
-	nsgroups, _ := gen_ngs(t, 1, 1, true)
+	nsgroups := gen_ngs(t, 1, 1, true)
 
 	allNodes, _ := genleafLayer(nsgroups)
 

@@ -10,8 +10,8 @@ import (
 // Hash is ElementSize bytes
 type Node []byte
 
-func (n Node) String() string {
-	return fmt.Sprintf("Min: %s Max: %s Hash: %s", n.MinNs(32).String(), n.MaxNs(32).String(), n.Hash(32).Hex())
+func (n Node) String(namespaceLen IDSize) string {
+	return fmt.Sprintf("Min: %s Max: %s Hash: %s", n.MinNs(namespaceLen).String(), n.MaxNs(namespaceLen).String(), n.Hash(namespaceLen).Hex())
 }
 
 func (n Node) Hex() string {
@@ -56,7 +56,7 @@ Hash the data according to nmt specs:
 
 Used to generate leaf nodes from set leaf data
 */
-func DataToNode(namespaceLen IDSize, data data) (out Node) {
+func DataToNode(namespaceLen IDSize, data Record) (out Node) {
 	out = make([]byte, namespaceLen*2+ElementSize)
 
 	nsID := data.NID(namespaceLen)
@@ -69,6 +69,7 @@ func DataToNode(namespaceLen IDSize, data data) (out Node) {
 	for i := 0; i < ElementSize; i++ {
 		out[i+int(namespaceLen*2)] = hash[i]
 	}
+
 	return out
 }
 

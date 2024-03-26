@@ -26,10 +26,22 @@ func genTestMt(t *testing.T, elements []Element, zero Element, depth int, hashFn
 	return mt
 }
 
+func Test_GenLeafLayer(t *testing.T) {
+
+}
+
+func Test_CalculateAbsenceIndex(t *testing.T) {
+
+}
+
+func Test_ProveNamespace(t *testing.T) {
+
+}
+
 func Test_Layers_Build(t *testing.T) {
-	testGroupSize := 10
-	testRecordSize := 10
-	nsgroup, _ := gen_ngs(t, testGroupSize, testRecordSize, true)
+	testGroupSize := 100
+	testRecordSize := 100
+	nsgroup := gen_ngs(t, testGroupSize, testRecordSize, true)
 
 	zero, err := hex.DecodeString(MerkleZeroHex)
 	require.NoError(t, err)
@@ -69,7 +81,7 @@ func Test_Layers_CalcRoot(t *testing.T) {
 
 	testGroupSize := 10
 	testRecordSize := 10
-	nsgroup, _ := gen_ngs(t, testGroupSize, testRecordSize, true)
+	nsgroup := gen_ngs(t, testGroupSize, testRecordSize, true)
 
 	zero, err := hex.DecodeString(MerkleZeroHex)
 	require.NoError(t, err)
@@ -94,13 +106,13 @@ func Test_Layers_CalcRoot(t *testing.T) {
 
 }
 
-func Test_Layers_BuildRangeProof(t *testing.T) {
+func Test_Layers_RangeProof(t *testing.T) {
 
 	testGroupSize := 3
 	testRecordSize := 3
 	testProofStart := 1
 	testProofEnd := 7
-	nsgroup, _ := gen_ngs(t, testGroupSize, testRecordSize, true)
+	nsgroup := gen_ngs(t, testGroupSize, testRecordSize, true)
 
 	zero, err := hex.DecodeString(MerkleZeroHex)
 	require.NoError(t, err)
@@ -115,12 +127,7 @@ func Test_Layers_BuildRangeProof(t *testing.T) {
 	require.NotNil(t, pathLayers)
 	fmt.Printf("Time to calc root, leaf size: %d ..  took %dms \n", len(leafNodes), time.Since(start).Milliseconds())
 
-	for i := 0; i < pathLayers.Depth(); i++ {
-		fmt.Println(pathLayers.GetLayer(i).String(32))
-	}
-
 	rootNode, levels := CalcRoot(32, Poseidon2, leafNodes, Element(zero))
-	fmt.Printf("Root Node: %s levels: %d\n", rootNode.String(), levels)
 
 	require.Equal(t, pathLayers.Levels(), levels, "Proof levels do not match")
 	// compare root
